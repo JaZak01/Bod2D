@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/jakza/CLionProjects/Bod2D/hlava.h
+
+C:/Users/jakza/CLionProjects/Bod2D/main.cpp
+iostream
+-
+hlava.h
+C:/Users/jakza/CLionProjects/Bod2D/hlava.h
+math.h
+-
+
