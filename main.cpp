@@ -13,12 +13,14 @@ int main()
     //std::cout<<Bod2D()<<Bod2D(3)<<Bod2D(1,6);
     //std::cin>>Bod2D;
     //std::cout<<Bod2D();
-    Prvy.spocitaj(Druhy).vypisBod();
-    Prvy.odcitaj(Druhy).vypisBod();
+    Prvy=Prvy+Druhy;
+    std::cout<<Prvy;
+    Prvy=Prvy-Druhy;
+    std::cout<<Prvy;
     Prvy= Prvy*3;
-    Prvy.vypisBod();
+    std::cout<<Prvy;
     Prvy= Prvy/3;
-    Prvy.vypisBod();
+    std::cout<<Prvy;
 
     return 0;
 }
@@ -92,7 +94,7 @@ void Bod2D::vypisBod() const
 {
     std::cout <<"Bod ma suradnice ["<<x<<","<<y<<"]"<<std::endl;
 }
-
+/*
 Bod2D Bod2D::spocitaj(const Bod2D &other) const
 {
      return {(x+other.x), (y+other.y)};
@@ -101,7 +103,7 @@ Bod2D Bod2D::spocitaj(const Bod2D &other) const
 Bod2D Bod2D::odcitaj(const Bod2D &other) const
 {
     return {(x-other.x), (y-other.y)};
-}
+}*/
 
 Bod2D Bod2D::operator*(float cislo) const
 {
@@ -111,6 +113,16 @@ Bod2D Bod2D::operator*(float cislo) const
 Bod2D Bod2D::operator/(float cislo) const
 {
     return {(x/cislo), (y/cislo)};
+}
+
+Bod2D Bod2D::operator+(const Bod2D &other) const
+{
+    return {(x+other.x), (y+other.y)};;
+}
+
+Bod2D Bod2D::operator-(const Bod2D &other) const
+{
+    return{(x-other.x), (y-other.y)};
 }
 /*
 Bod2D Bod2D::vzdialenosť(const Bod2D &other) const

@@ -21,8 +21,8 @@ public:
     friend std::ostream & operator<<(std::ostream & os,const Bod2D & other);
     friend std::istream & operator>>(std::istream & is, Bod2D & other);
 
-    Bod2D spocitaj(const Bod2D &other)const;
-    Bod2D odcitaj(const Bod2D &other)const;
+    Bod2D operator+(const Bod2D & otherBod) const;
+    Bod2D operator-(const Bod2D & otherBod) const;
 
     Bod2D operator*(float cislo) const;
     Bod2D operator/(float cislo) const;
