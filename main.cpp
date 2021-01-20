@@ -9,25 +9,22 @@ int main()
     Bod2D Druhy(5);
     /*Bod2D Treti(5,5);
     std::cout<<"Prva suradnica x je: "<<Prvy.getx()<<std::endl;
-    std::cout<<"Druha suradnica y je: "<<Prvy.gety()<<std::endl;*/
-    //std::cout<<Bod2D()<<Bod2D(3)<<Bod2D(1,6);
-    //std::cin>>Bod2D;
-    //std::cout<<Bod2D();
+    std::cout<<"Druha suradnica y je: "<<Prvy.gety()<<std::endl;
+    std::cout<<Bod2D()<<Bod2D(3)<<Bod2D(1,6);
+    std::cin>>Bod2D;*/
     /*
-    Prvy=Prvy+Druhy;
-    std::cout<<Prvy;
-    Prvy=Prvy-Druhy;
-    std::cout<<Prvy;
-    Prvy= Prvy*3;
-    std::cout<<Prvy;
-    Prvy= Prvy/3;
-    std::cout<<Prvy;*/
+    std::cout<<Bod2D();
+    std::cout<<Prvy+Druhy;
+    std::cout<<Prvy-Druhy;
+    std::cout<<Prvy*3;
+    std::cout<<Prvy/3;
+     */
     /*
     std::cout<< Prvy*2 << std::endl;
-    std::cout<< 2*Prvy << std::endl;*/
-    //std::cout<< "Vzdialenost bodu od nuly je: " <<Prvy.vzdialenostodnuly() << std::endl;
+    std::cout<< 2*Prvy << std::endl;
+    std::cout<< "Vzdialenost bodu od nuly je: " <<Prvy.vzdialenostodnuly() << std::endl;
     std::cout<< "Vzdialenost bodov je: "<<Prvy.vzdialenost(Druhy)<< std::endl;
-    Prvy.Stred(Druhy);
+    Prvy.Stred(Druhy);*/
 
     return 0;
 }
