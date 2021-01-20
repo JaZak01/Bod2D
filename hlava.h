@@ -35,7 +35,7 @@ public:
     const Bod2D & operator*=(float cislo);
     const Bod2D & operator/=(float cislo);
 
-    void Stred(const Bod2D & other);
+    Bod2D Stred(const Bod2D & other);
     float vzdialenostodnuly() const;
     float vzdialenost(const Bod2D &other) const;
 
