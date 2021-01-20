@@ -13,6 +13,7 @@ int main()
     //std::cout<<Bod2D()<<Bod2D(3)<<Bod2D(1,6);
     //std::cin>>Bod2D;
     //std::cout<<Bod2D();
+    /*
     Prvy=Prvy+Druhy;
     std::cout<<Prvy;
     Prvy=Prvy-Druhy;
@@ -20,7 +21,13 @@ int main()
     Prvy= Prvy*3;
     std::cout<<Prvy;
     Prvy= Prvy/3;
-    std::cout<<Prvy;
+    std::cout<<Prvy;*/
+    /*
+    std::cout<< Prvy*2 << std::endl;
+    std::cout<< 2*Prvy << std::endl;*/
+    //std::cout<< "Vzdialenost bodu od nuly je: " <<Prvy.vzdialenostodnuly() << std::endl;
+    std::cout<< "Vzdialenost bodov je: "<<Prvy.vzdialenost(Druhy)<< std::endl;
+    Prvy.Stred(Druhy);
 
     return 0;
 }
@@ -92,7 +99,7 @@ std::istream &operator>>(std::istream &is, Bod2D &other)
 }
 void Bod2D::vypisBod() const
 {
-    std::cout <<"Bod ma suradnice ["<<x<<","<<y<<"]"<<std::endl;
+    std::cout <<"["<<x<<","<<y<<"]"<<std::endl;
 }
 /*
 Bod2D Bod2D::spocitaj(const Bod2D &other) const
@@ -115,6 +122,15 @@ Bod2D Bod2D::operator/(float cislo) const
     return {(x/cislo), (y/cislo)};
 }
 
+Bod2D operator*(float cislo, Bod2D &other)
+{
+    return {(cislo*other.x),(cislo*other.y)};
+}
+Bod2D operator/(float cislo, const Bod2D & other)
+{
+    return {(cislo/other.x),(cislo/other.y)};
+}
+
 Bod2D Bod2D::operator+(const Bod2D &other) const
 {
     return {(x+other.x), (y+other.y)};;
@@ -124,8 +140,21 @@ Bod2D Bod2D::operator-(const Bod2D &other) const
 {
     return{(x-other.x), (y-other.y)};
 }
-/*
-Bod2D Bod2D::vzdialenosť(const Bod2D &other) const
+
+float Bod2D::vzdialenost(const Bod2D &other) const
 {
-    return {sqrt(((other.x*other.x)-(x*x))+((y*y)+(other.y*other.y)))};
-}*/
+    return sqrt(((x-other.x)*(x-other.x))+((y-other.y)*(y-other.y)));
+}
+
+float Bod2D::vzdialenostodnuly() const
+{
+    return sqrt((x*x)+(y*y));
+}
+
+void Bod2D::Stred(const Bod2D &otherBod)
+{
+
+    Bod2D other(x+otherBod.x,y+otherBod.y);
+    std::cout<< "Stred medzi bodmi je: " << other/2 << std::endl;
+}
+

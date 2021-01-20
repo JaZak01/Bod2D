@@ -25,11 +25,20 @@ public:
     Bod2D operator-(const Bod2D & otherBod) const;
 
     Bod2D operator*(float cislo) const;
+    friend Bod2D operator*(float cislo, Bod2D &other);
     Bod2D operator/(float cislo) const;
+    friend Bod2D operator/(float cislo, const Bod2D & other);
 
-    //Bod2D vydel(float cislo)const;
-    //Bod2D vydel(float cislo)const;
-    //Bod2D vzdialenosť(const Bod2D &other)const;
+
+    const Bod2D & operator+=(float cislo);
+    const Bod2D & operator-=(float cislo);
+    const Bod2D & operator*=(float cislo);
+    const Bod2D & operator/=(float cislo);
+
+    void Stred(const Bod2D & other);
+    float vzdialenostodnuly() const;
+    float vzdialenost(const Bod2D &other) const;
+
 
 
 
