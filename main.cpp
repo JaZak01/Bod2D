@@ -7,7 +7,8 @@ int main()
 
     Bod2D Prvy;
     Bod2D Druhy(5);
-    /*Bod2D Treti(5,5);
+    //Bod2D Treti(0,0);
+    /*
     std::cout<<"Prva suradnica x je: "<<Prvy.getx()<<std::endl;
     std::cout<<"Druha suradnica y je: "<<Prvy.gety()<<std::endl;
     std::cout<<Bod2D()<<Bod2D(3)<<Bod2D(1,6);
@@ -21,10 +22,11 @@ int main()
      */
     /*
     std::cout<< Prvy*2 << std::endl;
-    std::cout<< 2*Prvy << std::endl;
-    std::cout<< "Vzdialenost bodu od nuly je: " <<Prvy.vzdialenostodnuly() << std::endl;
-    std::cout<< "Vzdialenost bodov je: "<<Prvy.vzdialenost(Druhy)<< std::endl;*/
-    std::cout<< "Stred bodov je: "<<Prvy.Stred(Druhy)<< std::endl;
+    std::cout<< 2*Prvy << std::endl;*/
+    //std::cout<< "Vzdialenost bodu od nuly je: " <<Prvy.vzdialenostodnuly() << std::endl;
+    //std::cout<< "Stred bodov je: "<<Prvy.Stred(Druhy)<< std::endl;
+    std::cout<< "Vzdialenost bodov je: " <<Prvy.vzdialenost(Druhy) << std::endl;
+    std::cout<< "Vzdialenost bodu od nuly je: " <<Prvy.vzdialenost() << std::endl;
     //Prvy.Stred(Druhy);
 
     return 0;
@@ -138,6 +140,7 @@ Bod2D Bod2D::operator-(const Bod2D &other) const
 float Bod2D::vzdialenost(const Bod2D &other) const
 {
     return sqrt(((x-other.x)*(x-other.x))+((y-other.y)*(y-other.y)));
+
 }
 
 float Bod2D::vzdialenostodnuly() const
@@ -151,4 +154,6 @@ Bod2D Bod2D::Stred(const Bod2D &other)
     return Bod2D (((x+other.x)/2),((y+other.y)/2));
     //std::cout<< "Stred medzi bodmi je: " << other/2 << std::endl;
 }
+
+
 
