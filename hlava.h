@@ -8,9 +8,20 @@ private:
     float y;
 
 public:
-    Bod2D(float getx, float gety);
+    class streamError
+    {
+    private:
+        const char* msg;
+    public:
+        streamError(const char *sprava):msg(sprava){};
+        void getMsg() const;
+    };
+
+
+
+    Bod2D(float mojx, float mojy); // prerobit na inicializaciu
     Bod2D ();
-    explicit Bod2D(float getx);
+    explicit Bod2D(float getx);// tiez inicializaciu
     //explicit Bod2D(float getx);
     float getx() const;
     float gety() const;
@@ -38,10 +49,12 @@ public:
     Bod2D Stred(const Bod2D & other);
     float vzdialenostodnuly() const;
     float vzdialenost(const Bod2D &other=Bod2D(0,0)) const;
-    float vzdialenostajnula(const Bod2D &other=Bod2D(0,0)) const;
 
-
-
+    //nepouživame
+    /*
+    //float vzdialenostajnula(const Bod2D &other=Bod2D(0,0)) const;
+    //static void nacitajBody(float a, float b);
+*/
 
 
 };
