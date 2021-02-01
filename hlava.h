@@ -17,8 +17,6 @@ public:
         void getMsg() const;
     };
 
-
-
     Bod2D(float mojx, float mojy); // prerobit na inicializaciu
     Bod2D ();
     explicit Bod2D(float getx);// tiez inicializaciu
@@ -49,6 +47,8 @@ public:
     Bod2D Stred(const Bod2D & other);
     float vzdialenostodnuly() const;
     float vzdialenost(const Bod2D &other=Bod2D(0,0)) const;
+    static void vysortovanie(std::istream & is);
+
 
     //nepouživame
     /*
@@ -59,7 +59,26 @@ public:
 
 };
 
+class Usecka
+{
+private:
+    Bod2D X {0,0};
+    Bod2D Y {0,0};
+public:
+    Usecka(){};
+    Usecka(Bod2D A, Bod2D B):X(A),Y(B){};
+    explicit Usecka(Bod2D A):X(A), Y(A){};
+    friend std::ostream & operator<<(std::ostream & os,const Usecka & usecka);
+    friend std::istream & operator>>(std::istream & is, Usecka & usecka);
+    bool operator<(const Usecka & other) const;
+    bool operator>(const Usecka & other) const;
+    float getDlzka() const;
 
 
+};
 
 #endif
+
+
+
+
