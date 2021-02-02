@@ -6,7 +6,6 @@ class Bod2D
 private:
     float x;
     float y;
-
 public:
     class streamError
     {
@@ -47,7 +46,10 @@ public:
     Bod2D Stred(const Bod2D & other);
     float vzdialenostodnuly() const;
     float vzdialenost(const Bod2D &other=Bod2D(0,0)) const;
+    static void minimalVzd(std::istream & is);
     static void vysortovanie(std::istream & is);
+
+    //TREBA OPRAVIT LEEBO BY MALI BYT V PRIVATE ALE POTOM TO BLBNE S VEKTOROM
 
 
     //nepouživame
@@ -57,7 +59,10 @@ public:
 */
 
 
+
 };
+
+using Vektor = Bod2D;
 
 class Usecka
 {
@@ -73,7 +78,10 @@ public:
     bool operator<(const Usecka & other) const;
     bool operator>(const Usecka & other) const;
     float getDlzka() const;
-
+    //ULOHA:metody co vratia normalovy vektor usecky a vektor smerovy
+    Vektor getSmer() const;
+    Vektor getNormal() const;
+    Bod2D getStredovyusecky() const;
 
 };
 

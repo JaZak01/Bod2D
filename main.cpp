@@ -9,6 +9,19 @@ int comp (const void *prva, const void *druha);
 
 int main()
 {
+    Bod2D Prvy(10,5);
+    Bod2D Druhy(5,8);
+    Usecka Prva{(Prvy),(Druhy)};
+    std::cout<<Prva;
+    //std::cout<<Prva.getSmer(Prva)<<std::endl;
+    Vektor Adam = (Prva.getSmer());
+    std::cout<<Adam<<std::endl;
+    Vektor Norm = Prva.getNormal();
+    std::cout<<Prva.getStredovyusecky()<<std::endl;
+    //Bod2D Stredovy = (Prva.getStredovyusecky());
+    std::cout<<Norm<<std::endl;
+
+    /*
     std::ofstream fout;
     std::ifstream fin;
     //std::string line;
@@ -16,9 +29,9 @@ int main()
     float min = 0;
     float teraz = 0;
     int riadok;
-    //Bod2D usecky [100];
+    //Bod2D usecky [100];*/
 
-
+/*
     try
     {
         fin.open("suradnice.txt");
@@ -35,11 +48,11 @@ int main()
         {
             fin >> a >> b;
 
-           /* for (int & i : miesto)
+            for (int & i : miesto)
             {
                 fin >> a >> b;
 
-            }*/
+            }
             //Bod2D prvy(miesto[0], miesto[1]);
             //Bod2D druhy(miesto[2], miesto[3]);
             //std::cout<< "Vzdialenost bodov je: " <<prvy.vzdialenost(druhy) << std::endl;
@@ -55,21 +68,47 @@ int main()
         }
         std :: cout <<"najmensia vzdialenost je "<< min <<" v riadku " << riadok << std::endl;
         fin.close();
-        //Usecka dialky[100];
-        //fin.open("suradnice.txt");
-        //Bod2D::vysortovanie(fin);
-        //fout.open("vypis.txt");
-        //fout.close();
-
-
     }
-
     catch (const Bod2D::streamError & ex)
     {
         ex.getMsg();
         return 1;
-    }
+    }*/
+/*
+    try
+    {
+        Usecka dialky[100];
+        fin.open("suradnice.txt");
+        if(!fin.is_open())
+        {
+            throw Bod2D::streamError("Pri praci so suborom sa vyskytla chyba!");
+        }
+        for(auto & i : dialky)
+        {
+            fin >> i;
+        }
+        qsort(dialky, 100, sizeof(Usecka),comp);
+        std :: cout <<"utriedene:"<< std::endl;
+        fout.open("vypis.txt");
+        if(!fout.is_open())
+        {
+            throw Bod2D::streamError("Pri praci so suborom sa vyskytla chyba!");
+        }
 
+        for (int i = 0;i<100;++i)
+        {
+            std::cout<<dialky[i].getDlzka()<<" "<<dialky[i];
+            fout<<dialky[i].getDlzka()<<" "<<dialky[i]; //da sa to spravit v jednom cykle, naco dva....
+        }
+        fout.close();
+        fin.close();
+    }
+    catch (const Bod2D::streamError & ex)
+    {
+        ex.getMsg();
+        return 1;
+    }*/
+/*
     try
     {
         Usecka dialky[100];
@@ -106,7 +145,7 @@ int main()
     }
 
 
-/*
+
     try
     {
         fout.open("vypis.txt");
@@ -129,11 +168,6 @@ int main()
         ex.getMsg();
         return 1;
     }*/
-
-
-
-
-
 /*
     Bod2D Prvy;
     Bod2D Druhy(5);
@@ -259,7 +293,7 @@ Bod2D operator*(float cislo, Bod2D &other)
 
 Bod2D Bod2D::operator+(const Bod2D &other) const
 {
-    return {(x+other.x), (y+other.y)};;
+    return {(x+other.x), (y+other.y)};
 }
 
 Bod2D Bod2D::operator-(const Bod2D &other) const
@@ -292,11 +326,7 @@ void Bod2D::vysortovanie(std::istream &fin)
     {
         fin>>i;
 
-    }/*
-    for (int i = 0;i<100;++i)
-    {
-        std::cout<<dialky[i];
-    }*/
+    }
     qsort(dialky, 100, sizeof(Usecka),comp);
 
     std :: cout <<"utriedene:"<< std::endl;
@@ -305,6 +335,31 @@ void Bod2D::vysortovanie(std::istream &fin)
         std::cout<<dialky[i].getDlzka()<<" "<<dialky[i];
     }
 
+}
+
+void Bod2D::minimalVzd(std::istream &fin)
+{
+    float min = 0;
+    float teraz = 0;
+    int riadok;
+
+    Bod2D a;
+    Bod2D b;
+    fin >> a >> b;
+    min = a.vzdialenost(b);
+
+    for(int j  = 1; j <= 100;++j)
+    {
+        fin >> a >> b;
+        teraz = a.vzdialenost(b);
+
+        if (teraz < min)
+        {
+            riadok = j;
+            min = teraz;
+        }
+    }
+    std :: cout <<"najmensia vzdialenost je "<< min <<" v riadku " << riadok << std::endl;
 }
 
 /*
@@ -345,10 +400,40 @@ bool Usecka::operator>(const Usecka &other) const
     return this -> getDlzka()>other.getDlzka();
 }
 
+Vektor Usecka::getSmer() const
+{
+    return Vektor{((X.getx())-(Y.getx())), ((X.gety())-(Y.gety()))};
+}
+
+Vektor Usecka::getNormal() const
+{
+    Vektor premenna = getSmer();
+
+    return Vektor{(premenna.gety()), -(premenna.getx())};
+}
+
+Bod2D Usecka::getStredovyusecky() const
+{
+    return Bod2D{(((X.getx())+(Y.getx()))/2), (((X.gety())+(Y.gety()))/2)};
+}
+
 int comp(const void *prva, const void *druha)
 {
     Usecka * A = (Usecka *)prva;
     Usecka * B = (Usecka *)druha;
-    return (*A)<(*B);
+
+    //return (*A)<(*B);
+/*
+    if ((*A)<(*B))
+    {
+        return -1;
+    }
+    if ((*A)>(*B))
+    {
+        return 1;
+    }*/
+    float adist=A->getDlzka();
+    float bdist=B->getDlzka();
+    return (adist>bdist)-(adist<bdist);
 }
 
