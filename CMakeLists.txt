@@ -3,4 +3,4 @@ project(Bod2D)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Bod2D main.cpp hlava.h)
+add_executable(Bod2D main.cpp hlava.h inout.h)

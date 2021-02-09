@@ -1,17 +1,25 @@
 #include <iostream>
 #include "hlava.h"
-#include <math.h>
-#include<fstream>
+#include "inout.h"
+#include <cmath>
 #include <string>
+
 //using namespace std;
+using namespace inout;
 
 int comp (const void *prva, const void *druha);
 
 int main()
 {
+
+
     Bod2D Prvy(10,5);
     Bod2D Druhy(5,8);
     Usecka Prva{(Prvy),(Druhy)};
+    Usecka::VseRov pokus = Prva.getVseo();
+    //cout<<Prva.getVseo();
+    cout<<pokus;
+    /*
     std::cout<<Prva;
     //std::cout<<Prva.getSmer(Prva)<<std::endl;
     Vektor Adam = (Prva.getSmer());
@@ -19,7 +27,7 @@ int main()
     Vektor Norm = Prva.getNormal();
     std::cout<<Prva.getStredovyusecky()<<std::endl;
     //Bod2D Stredovy = (Prva.getStredovyusecky());
-    std::cout<<Norm<<std::endl;
+    std::cout<<Norm<<std::endl;*/
 
     /*
     std::ofstream fout;
@@ -402,19 +410,21 @@ bool Usecka::operator>(const Usecka &other) const
 
 Vektor Usecka::getSmer() const
 {
-    return Vektor{((X.getx())-(Y.getx())), ((X.gety())-(Y.gety()))};
+    //return Vektor{((X.getx())-(Y.getx())), ((X.gety())-(Y.gety()))};
+    return Y-X;
 }
 
 Vektor Usecka::getNormal() const
 {
     Vektor premenna = getSmer();
-
-    return Vektor{(premenna.gety()), -(premenna.getx())};
+    //return Vektor{(premenna.gety()), -(premenna.getx())};
+    return {-premenna.gety(),premenna.getx()};
 }
 
 Bod2D Usecka::getStredovyusecky() const
 {
-    return Bod2D{(((X.getx())+(Y.getx()))/2), (((X.gety())+(Y.gety()))/2)};
+    //return Bod2D{(((X.getx())+(Y.getx()))/2), (((X.gety())+(Y.gety()))/2)};
+    return (X+Y)/2;
 }
 
 int comp(const void *prva, const void *druha)
@@ -422,6 +432,7 @@ int comp(const void *prva, const void *druha)
     Usecka * A = (Usecka *)prva;
     Usecka * B = (Usecka *)druha;
 
+    //return ((*A)<(*B)?1:((*A)>(*B))?(-1):);
     //return (*A)<(*B);
 /*
     if ((*A)<(*B))
@@ -437,3 +448,16 @@ int comp(const void *prva, const void *druha)
     return (adist>bdist)-(adist<bdist);
 }
 
+std::ostream &operator<<(std::ostream &os, const Usecka::VseRov &other)
+{
+    os<<showpos<<(other.a)<<"x"<<(other.b)<<"y"<<(other.c)<<"=0"<< std::endl;
+    return os;
+}
+
+Usecka::VseRov Usecka::getVseo() const
+{
+    Vektor XY= getNormal();
+    //cout << XY << endl;
+    float C = (XY.getx() * X.getx() + XY.gety() * X.gety());
+    return Usecka::VseRov(XY.getx(), XY.gety(), -C );
+}

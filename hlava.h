@@ -17,13 +17,13 @@ public:
     };
 
     Bod2D(float mojx, float mojy); // prerobit na inicializaciu
-    Bod2D ();
+    Bod2D ();//:x(0),y(0){};
     explicit Bod2D(float getx);// tiez inicializaciu
     //explicit Bod2D(float getx);
-    float getx() const;
-    float gety() const;
-    void setSuradnicax(float getx);
-    void setSuradnicay(float gety);
+    float getx() const;//float getx(){return x;} const;
+    float gety() const;// float gety() {return y;} const;
+    void setSuradnicax(float getx);//void setSuradnicax(float getx) {x = getx;};
+    void setSuradnicay(float gety);//void setSuradnicay(float gety) {y = gety;};
     void vypisBod() const;
 
     friend std::ostream & operator<<(std::ostream & os,const Bod2D & other);
@@ -49,7 +49,6 @@ public:
     static void minimalVzd(std::istream & is);
     static void vysortovanie(std::istream & is);
 
-    //TREBA OPRAVIT LEEBO BY MALI BYT V PRIVATE ALE POTOM TO BLBNE S VEKTOROM
 
 
     //nepouživame
@@ -66,10 +65,23 @@ using Vektor = Bod2D;
 
 class Usecka
 {
+
 private:
     Bod2D X {0,0};
     Bod2D Y {0,0};
 public:
+    class VseRov
+    {
+    private:
+        float a;
+        float b;
+        float c;
+    public:
+        VseRov (float ka, float kb, float kc): a(ka), b(kb),c(kc){};
+        friend std::ostream & operator<<(std::ostream & os,const VseRov &other);
+
+
+    };
     Usecka(){};
     Usecka(Bod2D A, Bod2D B):X(A),Y(B){};
     explicit Usecka(Bod2D A):X(A), Y(A){};
@@ -82,6 +94,7 @@ public:
     Vektor getSmer() const;
     Vektor getNormal() const;
     Bod2D getStredovyusecky() const;
+    VseRov getVseo() const;
 
 };
 

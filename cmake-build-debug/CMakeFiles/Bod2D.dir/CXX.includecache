@@ -8,14 +8,22 @@
 
 C:/Users/jakza/CLionProjects/Bod2D/hlava.h
 
+C:/Users/jakza/CLionProjects/Bod2D/inout.h
+iostream
+-
+fstream
+-
+iomanip
+-
+
 C:/Users/jakza/CLionProjects/Bod2D/main.cpp
 iostream
 -
 hlava.h
 C:/Users/jakza/CLionProjects/Bod2D/hlava.h
-math.h
--
-fstream
+inout.h
+C:/Users/jakza/CLionProjects/Bod2D/inout.h
+cmath
 -
 string
 -

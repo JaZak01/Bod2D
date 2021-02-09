@@ -83,6 +83,9 @@
 		<Unit filename="C:/Users/jakza/CLionProjects/Bod2D/hlava.h">
 			<Option target="Bod2D"/>
 		</Unit>
+		<Unit filename="C:/Users/jakza/CLionProjects/Bod2D/inout.h">
+			<Option target="Bod2D"/>
+		</Unit>
 		<Unit filename="C:/Users/jakza/CLionProjects/Bod2D/main.cpp">
 			<Option target="Bod2D"/>
 		</Unit>
