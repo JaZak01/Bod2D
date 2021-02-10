@@ -13,12 +13,15 @@ int main()
 {
 
 
-    Bod2D Prvy(10,5);
-    Bod2D Druhy(5,8);
+    Bod2D Prvy(1,3);
+    Bod2D Druhy(3,7);
     Usecka Prva{(Prvy),(Druhy)};
-    Usecka::VseRov pokus = Prva.getVseo();
+    //Usecka::VseRov pokus = Prva.getVseo();
+    Usecka::ParRov pokus = Prva.getPar();
+    (Usecka::VseRov)Prva;
+    (Usecka::ParRov)Prva;
     //cout<<Prva.getVseo();
-    cout<<pokus;
+    //cout<<pokus;
     /*
     std::cout<<Prva;
     //std::cout<<Prva.getSmer(Prva)<<std::endl;
@@ -450,7 +453,7 @@ int comp(const void *prva, const void *druha)
 
 std::ostream &operator<<(std::ostream &os, const Usecka::VseRov &other)
 {
-    os<<showpos<<(other.a)<<"x"<<(other.b)<<"y"<<(other.c)<<"=0"<< std::endl;
+    os<<showpos<<"Vseobecna rovnica: "<<(other.koeficienty[0])<<"x"<<(other.koeficienty[1])<<"y"<<(other.koeficienty[2])<<"=0"<< std::endl;
     return os;
 }
 
@@ -459,5 +462,29 @@ Usecka::VseRov Usecka::getVseo() const
     Vektor XY= getNormal();
     //cout << XY << endl;
     float C = (XY.getx() * X.getx() + XY.gety() * X.gety());
+    cout<<Usecka::VseRov(XY.getx(), XY.gety(), -C );
     return Usecka::VseRov(XY.getx(), XY.gety(), -C );
+}
+
+std::ostream &operator<<(std::ostream &os, const Usecka::ParRov &other)
+{
+    os<<showpos<<"Parametricka rovnica: "<<endl<< "x=" <<(other.koeficienty[0])<<"+t.("<<(other.koeficienty[1])<<")"<<endl<<"y=" <<(other.koeficienty[2])<<"+t.("<<(other.koeficienty[3])<<")   t patri R";
+    return os;
+}
+
+Usecka::ParRov Usecka::getPar() const
+{
+    Vektor pomocny=getSmer();
+    cout<<Usecka::ParRov(X.getx(), pomocny.getx(), X.gety(), pomocny.gety());
+    return Usecka::ParRov(X.getx(), pomocny.getx(), X.gety(), pomocny.gety());
+}
+
+Usecka::operator VseRov() const
+{
+    return getVseo();
+}
+
+Usecka::operator ParRov() const
+{
+    return getPar();
 }

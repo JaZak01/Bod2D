@@ -70,18 +70,27 @@ private:
     Bod2D X {0,0};
     Bod2D Y {0,0};
 public:
-    class VseRov
-    {
+    class VseRov {
     private:
-        float a;
-        float b;
-        float c;
+        float koeficienty[3];
     public:
-        VseRov (float ka, float kb, float kc): a(ka), b(kb),c(kc){};
-        friend std::ostream & operator<<(std::ostream & os,const VseRov &other);
-
-
+        VseRov(float ka, float kb, float kc) : koeficienty{ka, kb, kc} {};
+        friend std::ostream &operator<<(std::ostream &os, const VseRov &other);
+        float &operator[](int index) { return koeficienty[index];};
+        const float & operator[](int index) const{return koeficienty[index];};
     };
+
+    class ParRov{
+    private:
+        float koeficienty[4];
+    public:
+        ParRov (float ka1, float kv1, float ka2, float kv2): koeficienty{ka1,kv1,ka2,kv2}{};
+        friend std::ostream & operator<<(std::ostream & os,const ParRov &other);
+        float & operator[](int index){return koeficienty[index];};
+        const float & operator[](int index) const{return koeficienty[index];};
+    };
+
+
     Usecka(){};
     Usecka(Bod2D A, Bod2D B):X(A),Y(B){};
     explicit Usecka(Bod2D A):X(A), Y(A){};
@@ -89,12 +98,16 @@ public:
     friend std::istream & operator>>(std::istream & is, Usecka & usecka);
     bool operator<(const Usecka & other) const;
     bool operator>(const Usecka & other) const;
+    explicit operator VseRov()const;
+    explicit operator ParRov()const;
     float getDlzka() const;
     //ULOHA:metody co vratia normalovy vektor usecky a vektor smerovy
     Vektor getSmer() const;
     Vektor getNormal() const;
     Bod2D getStredovyusecky() const;
     VseRov getVseo() const;
+    ParRov getPar() const;
+
 
 };
 
