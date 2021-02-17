@@ -1,5 +1,7 @@
 #ifndef BOD2D_HLAVA_H
 #define BOD2D_HLAVA_H
+#include <iosfwd>
+
 
 class Bod2D
 {
@@ -43,11 +45,12 @@ public:
     const Bod2D & operator*=(float cislo);
     const Bod2D & operator/=(float cislo);*/
 
-    Bod2D Stred(const Bod2D & other);
+    Bod2D Stred(const Bod2D & other) ;
     float vzdialenostodnuly() const;
     float vzdialenost(const Bod2D &other=Bod2D(0,0)) const;
     static void minimalVzd(std::istream & is);
     static void vysortovanie(std::istream & is);
+    float getDlzka() const;
 
 
 
@@ -90,6 +93,14 @@ public:
         const float & operator[](int index) const{return koeficienty[index];};
     };
 
+    class Poloha
+    {
+        char popis[11];
+        Bod2D priesecnik;
+    public:
+        Poloha (char *text, const Bod2D &prienik);
+    };
+
 
     Usecka(){};
     Usecka(Bod2D A, Bod2D B):X(A),Y(B){};
@@ -107,6 +118,12 @@ public:
     Bod2D getStredovyusecky() const;
     VseRov getVseo() const;
     ParRov getPar() const;
+    VseRov getOs() const;
+    float getUhol(const Usecka & other, char typ = 'r') const;
+    float getUholR (const Usecka & other, char typ = 'o') const;
+    void JeToNula(const Usecka & other) const;
+    bool jeRovnobezna(const Usecka &other) const;
+    Poloha getPoloha(const Usecka & other) const;
 
 
 };

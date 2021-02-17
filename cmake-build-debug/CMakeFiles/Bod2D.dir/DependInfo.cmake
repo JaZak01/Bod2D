@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "C:/Users/jakza/CLionProjects/Bod2D/cmake-build-debug/Bod.cpp" "C:/Users/jakza/CLionProjects/Bod2D/cmake-build-debug/CMakeFiles/Bod2D.dir/Bod.cpp.obj"
   "C:/Users/jakza/CLionProjects/Bod2D/main.cpp" "C:/Users/jakza/CLionProjects/Bod2D/cmake-build-debug/CMakeFiles/Bod2D.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

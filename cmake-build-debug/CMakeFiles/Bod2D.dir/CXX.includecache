@@ -6,17 +6,7 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/jakza/CLionProjects/Bod2D/hlava.h
-
-C:/Users/jakza/CLionProjects/Bod2D/inout.h
-iostream
--
-fstream
--
-iomanip
--
-
-C:/Users/jakza/CLionProjects/Bod2D/main.cpp
+C:/Users/jakza/CLionProjects/Bod2D/Bod.cpp
 iostream
 -
 hlava.h
@@ -27,4 +17,30 @@ cmath
 -
 string
 -
+
+C:/Users/jakza/CLionProjects/Bod2D/hlava.h
+iosfwd
+-
+
+C:/Users/jakza/CLionProjects/Bod2D/inout.h
+iostream
+-
+fstream
+-
+iomanip
+-
+
+C:/Users/jakza/CLionProjects/Bod2D/main.cpp
+hlava.h
+C:/Users/jakza/CLionProjects/Bod2D/hlava.h
+inout.h
+C:/Users/jakza/CLionProjects/Bod2D/inout.h
+cmath
+-
+string
+-
+Bod.cpp
+C:/Users/jakza/CLionProjects/Bod2D/Bod.cpp
+inout.h
+C:/Users/jakza/CLionProjects/Bod2D/inout.h
 

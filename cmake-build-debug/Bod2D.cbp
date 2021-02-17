@@ -80,6 +80,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/jakza/CLionProjects/Bod2D/cmake-build-debug/Bod.cpp">
+			<Option target="Bod2D"/>
+		</Unit>
 		<Unit filename="C:/Users/jakza/CLionProjects/Bod2D/hlava.h">
 			<Option target="Bod2D"/>
 		</Unit>

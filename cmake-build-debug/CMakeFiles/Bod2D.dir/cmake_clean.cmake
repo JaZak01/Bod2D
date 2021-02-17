@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "Bod2D.exe"
   "Bod2D.exe.manifest"
   "Bod2D.pdb"
+  "CMakeFiles/Bod2D.dir/Bod.cpp.obj"
   "CMakeFiles/Bod2D.dir/main.cpp.obj"
   "libBod2D.dll.a"
 )
