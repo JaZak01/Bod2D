@@ -4,6 +4,8 @@
 #include "inout.h"
 #include <cmath>
 #include <string>
+#include <cstring>
+
 #define PI 3.14159265
 
 using namespace inout;
@@ -387,6 +389,10 @@ bool Usecka::jeRovnobezna(const Usecka &other) const
     {
         this->getPoloha(other);
     }
+    else
+    {
+        cout << "su rovnobezne" << endl;
+    }
     return (jed.getx() / dva.gety() == jed.gety() / dva.gety());
 }
 
@@ -400,15 +406,43 @@ Usecka::Poloha Usecka::getPoloha(const Usecka &other) const
         float D1 = (pomocna[0]*pomocna1[1]) - (pomocna1[0]*pomocna[1]);
         float D2 = ((-pomocna[2])*pomocna1[1]) - ((-pomocna1[2])*pomocna[1]);
         float D3 = (pomocna[0]*(-pomocna1[2])) - (pomocna1[0]*(-pomocna[2]));
-        cout << D1<<";"<<D2<<";"<<D3<<endl;
+        //cout << D1<<";"<<D2<<";"<<D3<<endl;
         //Bod2D X ((D2/D1),(D3/D1));
-        cout << "prienik X ma suradnicke"<<Bod2D((D2/D1),(D3/D1))<<endl;
-        return Usecka::Poloha (nullptr, Bod2D((D2/D1),(D3/D1)));
+        //cout << "prienik X ma suradnicke"<<Bod2D((D2/D1),(D3/D1))<<endl;
+        cout << Usecka::Poloha ("roznobezna", Bod2D((D2/D1),(D3/D1)));
+        return Usecka::Poloha ("roznobezna", Bod2D((D2/D1),(D3/D1)));
 
 }
 
-Usecka::Poloha::Poloha(char *text, const Bod2D &prienik)
+Usecka::Poloha::Poloha(char const *text, const Bod2D &prienik) : priesecnik(prienik)
 {
-    popis[0] = 'X';
-    priesecnik = Bod2D(0,0);
+    //popis[0] = 'X';
+    //priesecnik = Bod2D(0,0);
+    std::strncpy(popis,text, 10);
+}
+
+std::ostream &operator<<(std::ostream &os, const Usecka::Poloha &poloha)
+{
+    os<<"Poloha prieniku: " <<(poloha.getPriesecnik())<<endl;
+    return os;
+}
+
+Usecka::VseRov Usecka::getOsUhla(const Usecka &other) const
+{
+    Usecka::Poloha adam = getPoloha(other);
+    Bod2D B1 = adam.getPriesecnik();
+    //cout << B1<<endl;
+
+    Vektor J = this -> getNormal();
+    Usecka A = {(J), (X)};
+
+    Vektor D = other.getNormal();
+    Usecka B = {(D), (other.X)};
+
+    Usecka::Poloha eva = A.getPoloha(B);
+    Bod2D B2 = eva.getPriesecnik();
+
+    Usecka konec = {(B1),(B2)};
+
+    return Usecka::VseRov(konec);
 }

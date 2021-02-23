@@ -16,6 +16,7 @@ namespace inout
     using std::left; // zarovnanie
     using std::right; // zarovnanie
     using std::showpos; // da plus pred kladne
+
 }
 
 #endif //BOD2D_INOUT_H

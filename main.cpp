@@ -19,14 +19,11 @@ int main()
     Bod2D Druhy(3,7);
     Bod2D Treti(5,8);
     Bod2D Stvrty(2,12);
-    //Bod2D Prvy(3,3);
-    //Bod2D Druhy(5,5);
-    //Bod2D Treti(5,6);
-    //Bod2D Stvrty(8,9);
     Usecka Prva{(Prvy),(Druhy)};
     Usecka Druha{(Treti),(Stvrty)};
-    Prva.getUholR(Druha, 's');
-    cout<< Prva.jeRovnobezna(Druha) <<endl;
+    Prva.getOsUhla(Druha);
+    //Prva.getUholR(Druha, 's');
+    //cout<< Prva.jeRovnobezna(Druha) <<endl;
     //Prva.JeToNula(Druha);
     /*
     //Prva.getUhol(Druha);

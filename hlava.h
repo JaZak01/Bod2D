@@ -98,7 +98,9 @@ public:
         char popis[11];
         Bod2D priesecnik;
     public:
-        Poloha (char *text, const Bod2D &prienik);
+        Poloha (char const *text, const Bod2D &prienik);
+        Bod2D getPriesecnik()const{return priesecnik;};
+        friend std::ostream &operator<<(std::ostream &os, const Poloha &poloha);
     };
 
 
@@ -124,7 +126,7 @@ public:
     void JeToNula(const Usecka & other) const;
     bool jeRovnobezna(const Usecka &other) const;
     Poloha getPoloha(const Usecka & other) const;
-
+    VseRov getOsUhla(const Usecka & other) const;
 
 };
 
