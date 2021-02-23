@@ -21,7 +21,7 @@ int main()
     Bod2D Stvrty(2,12);
     Usecka Prva{(Prvy),(Druhy)};
     Usecka Druha{(Treti),(Stvrty)};
-    Prva.getOsUhla(Druha);
+    cout<<setprecision(2)<< Prva.getOsUhla(Druha)<<endl;
     //Prva.getUholR(Druha, 's');
     //cout<< Prva.jeRovnobezna(Druha) <<endl;
     //Prva.JeToNula(Druha);

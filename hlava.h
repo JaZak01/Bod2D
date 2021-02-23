@@ -52,6 +52,7 @@ public:
     static void vysortovanie(std::istream & is);
     float getDlzka() const;
 
+    Bod2D getJednotkovy() const;
 
 
     //nepouživame
@@ -127,6 +128,7 @@ public:
     bool jeRovnobezna(const Usecka &other) const;
     Poloha getPoloha(const Usecka & other) const;
     VseRov getOsUhla(const Usecka & other) const;
+
 
 };
 

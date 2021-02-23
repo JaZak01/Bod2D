@@ -231,7 +231,6 @@ Vektor Usecka::getSmer() const
 Vektor Usecka::getNormal() const
 {
     Vektor premenna = getSmer();
-    //return Vektor{(premenna.gety()), -(premenna.getx())};
     return {-premenna.gety(),premenna.getx()};
 }
 
@@ -416,9 +415,8 @@ Usecka::Poloha Usecka::getPoloha(const Usecka &other) const
 
 Usecka::Poloha::Poloha(char const *text, const Bod2D &prienik) : priesecnik(prienik)
 {
-    //popis[0] = 'X';
-    //priesecnik = Bod2D(0,0);
     std::strncpy(popis,text, 10);
+    popis[10]='\0';  // musim to pridat pri strncpy
 }
 
 std::ostream &operator<<(std::ostream &os, const Usecka::Poloha &poloha)
@@ -430,19 +428,24 @@ std::ostream &operator<<(std::ostream &os, const Usecka::Poloha &poloha)
 Usecka::VseRov Usecka::getOsUhla(const Usecka &other) const
 {
     Usecka::Poloha adam = getPoloha(other);
-    Bod2D B1 = adam.getPriesecnik();
-    //cout << B1<<endl;
+    Bod2D PR = adam.getPriesecnik();
 
-    Vektor J = this -> getNormal();
-    Usecka A = {(J), (X)};
+    Vektor J = this -> getSmer();
+    Vektor D = other.getSmer();
 
-    Vektor D = other.getNormal();
-    Usecka B = {(D), (other.X)};
+    Vektor B1 = J.getJednotkovy();
+    Vektor B2 = D.getJednotkovy();
 
-    Usecka::Poloha eva = A.getPoloha(B);
-    Bod2D B2 = eva.getPriesecnik();
+    //Vektor B = {(B1.getx()+B2.getx()),(B1.gety()+B2.gety())}; // smerovy vektor z jednotkovych
+    Vektor XY = {-(B1.gety()+B2.gety()),(B1.getx()+B2.getx())}; // rovno som vypocital normalovy
+    //Vektor XY = {-B.gety(),B.getx()}; // premena na normalovy
+    //float C = (XY.getx() * PR.getx() + XY.gety() * PR.gety()); // vypocet C
+    //cout<<Usecka::VseRov(XY.getx(), XY.gety(), - (XY.getx() * PR.getx() + XY.gety() * PR.gety())); // vypocet som dosadil a aj v returne
 
-    Usecka konec = {(B1),(B2)};
+    return Usecka::VseRov(XY.getx(), XY.gety(), -(XY.getx() * PR.getx() + XY.gety() * PR.gety()));
+}
 
-    return Usecka::VseRov(konec);
+Bod2D Bod2D::getJednotkovy() const
+{
+    return Bod2D{(getx()/getDlzka()), (gety()/getDlzka())};
 }
