@@ -14,14 +14,29 @@
 int main()
 {
     using namespace inout;
-
+/*
     Bod2D Prvy(1,3);
     Bod2D Druhy(3,7);
     Bod2D Treti(5,8);
-    Bod2D Stvrty(2,12);
-    Usecka Prva{(Prvy),(Druhy)};
-    Usecka Druha{(Treti),(Stvrty)};
-    cout<<setprecision(2)<< Prva.getOsUhla(Druha)<<endl;
+*/
+    Bod2D Prvy(4,10);
+    Bod2D Druhy(2,12);
+    Bod2D Treti(10,15);
+
+    //Bod2D Stvrty(2,12);
+    //Usecka Prva{(Prvy),(Druhy)};
+    //Usecka Druha{(Treti),(Stvrty)};
+    Trojuholnik Adam = {Prvy, Druhy, Treti};
+    //Trojuholnik Jakub  = Trojuholnik();
+    //cout << Adam.getTazisko() << endl;
+    //cout << Adam.getOrtocentrum() << endl;
+    cout << Adam.getDlzkastrany('a')<< endl;
+    Adam.getOpisanaKruznica();
+    //cout << Adam.getObsah()<< endl;
+    //Adam.getKruznicaDeviatichbodov();
+
+
+    //cout<<setprecision(2)<< Prva.getOsUhla(Druha)<<endl;
     //Prva.getUholR(Druha, 's');
     //cout<< Prva.jeRovnobezna(Druha) <<endl;
     //Prva.JeToNula(Druha);

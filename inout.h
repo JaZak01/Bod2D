@@ -4,6 +4,9 @@
 #include<iostream>
 #include<fstream>
 #include<iomanip>
+#include<exception>
+#include<random>
+#include<Ctime>
 
 namespace inout
 {

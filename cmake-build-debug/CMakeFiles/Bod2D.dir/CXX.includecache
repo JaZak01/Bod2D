@@ -19,6 +19,8 @@ string
 -
 cstring
 -
+random
+-
 
 C:/Users/jakza/CLionProjects/Bod2D/hlava.h
 iosfwd
@@ -30,6 +32,12 @@ iostream
 fstream
 -
 iomanip
+-
+exception
+-
+random
+-
+Ctime
 -
 
 C:/Users/jakza/CLionProjects/Bod2D/main.cpp

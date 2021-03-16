@@ -45,7 +45,7 @@ public:
     const Bod2D & operator*=(float cislo);
     const Bod2D & operator/=(float cislo);*/
 
-    Bod2D Stred(const Bod2D & other) ;
+    Bod2D Stred(const Bod2D & other) const;
     float vzdialenostodnuly() const;
     float vzdialenost(const Bod2D &other=Bod2D(0,0)) const;
     static void minimalVzd(std::istream & is);
@@ -115,19 +115,53 @@ public:
     explicit operator VseRov()const;
     explicit operator ParRov()const;
     float getDlzka() const;
-    //ULOHA:metody co vratia normalovy vektor usecky a vektor smerovy
     Vektor getSmer() const;
     Vektor getNormal() const;
     Bod2D getStredovyusecky() const;
     VseRov getVseo() const;
     ParRov getPar() const;
     VseRov getOs() const;
+    Usecka getOsU() const;
     float getUhol(const Usecka & other, char typ = 'r') const;
     float getUholR (const Usecka & other, char typ = 'o') const;
     void JeToNula(const Usecka & other) const;
-    bool jeRovnobezna(const Usecka &other) const;
+    bool totozne(const Usecka &other) const;
+    bool rovnobezne(const Usecka &other) const;
     Poloha getPoloha(const Usecka & other) const;
-    VseRov getOsUhla(const Usecka & other) const;
+    VseRov getOsUhla(const Usecka & other) const; // get Os tiez na vracanie Usecky a nie VseRov
+    Usecka getOsUhlaU(const Usecka & other) const;
+
+
+};
+
+class Trojuholnik
+{
+class MsgErr : public std::exception
+        {
+        private:
+            const char * msg;
+        public:
+            explicit MsgErr (const char * sprava):msg(sprava){};
+            void getMsg() const;
+        };
+private:
+    Bod2D A;
+    Bod2D B;
+    Bod2D C;
+    static bool existuje(Bod2D x, Bod2D y, Bod2D z);
+    int generuj (int min, int max) const;
+public:
+    Trojuholnik (Bod2D x, Bod2D y, Bod2D z);
+    Trojuholnik ();
+    float getDlzkastrany(char strana='a') const;
+    float getvelkostUhla (char * uhol )const;
+    float getObvod() const;
+    float getObsah() const;
+    Bod2D getTazisko() const;
+    Bod2D getOrtocentrum() const;
+    void getOpisanaKruznica() const;
+    void getVpisanaKruznica() const;
+    void getKruznicaDeviatichbodov() const;
 
 
 };

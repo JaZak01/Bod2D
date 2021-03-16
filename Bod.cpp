@@ -5,6 +5,8 @@
 #include <cmath>
 #include <string>
 #include <cstring>
+#include<random>
+
 
 #define PI 3.14159265
 
@@ -128,8 +130,7 @@ float Bod2D::vzdialenostodnuly() const
     return sqrt((x*x)+(y*y));
 }*/
 
-Bod2D Bod2D::Stred(const Bod2D & other)
-{
+Bod2D Bod2D::Stred(const Bod2D & other) const {
 
     return Bod2D (((x+other.x)/2),((y+other.y)/2));
     //std::cout<< "Stred medzi bodmi je: " << other/2 << std::endl;
@@ -272,7 +273,8 @@ Usecka::VseRov Usecka::getVseo() const
     Vektor XY= getNormal();
     //cout << XY << endl;
     float C = (XY.getx() * X.getx() + XY.gety() * X.gety());
-    cout<<Usecka::VseRov(XY.getx(), XY.gety(), -C );
+    //
+    // cout<<Usecka::VseRov(XY.getx(), XY.gety(), -C );
     return Usecka::VseRov(XY.getx(), XY.gety(), -C );
 }
 
@@ -380,43 +382,43 @@ float Usecka::getUholR(const Usecka &other, char typ) const
 
 }
 
-bool Usecka::jeRovnobezna(const Usecka &other) const
+bool Usecka::rovnobezne(const Usecka &other) const
 {
-    Vektor jed = this -> getSmer();
-    Vektor dva = other.getSmer();
-    if (jed.getx() / dva.gety() != jed.gety() / dva.gety())
-    {
-        this->getPoloha(other);
-    }
-    else
-    {
-        cout << "su rovnobezne" << endl;
-    }
-    return (jed.getx() / dva.gety() == jed.gety() / dva.gety());
+    Vektor v = this -> getSmer();
+    Vektor u = other.getSmer();
+    return (v.getx() / u.gety() == v.gety() / u.gety());
 }
-
-
+bool Usecka::totozne(const Usecka &other) const
+{
+    VseRov prva = this->getVseo();
+    VseRov druha = other.getVseo();
+    return prva[0]/druha[0]==prva[1]/druha[1]==prva[2]/druha[2];
+}
 
 Usecka::Poloha Usecka::getPoloha(const Usecka &other) const
 {
-
-        Usecka::VseRov pomocna = getVseo();
-        Usecka::VseRov pomocna1 = other.getVseo();
-        float D1 = (pomocna[0]*pomocna1[1]) - (pomocna1[0]*pomocna[1]);
-        float D2 = ((-pomocna[2])*pomocna1[1]) - ((-pomocna1[2])*pomocna[1]);
-        float D3 = (pomocna[0]*(-pomocna1[2])) - (pomocna1[0]*(-pomocna[2]));
-        //cout << D1<<";"<<D2<<";"<<D3<<endl;
-        //Bod2D X ((D2/D1),(D3/D1));
-        //cout << "prienik X ma suradnicke"<<Bod2D((D2/D1),(D3/D1))<<endl;
-        cout << Usecka::Poloha ("roznobezna", Bod2D((D2/D1),(D3/D1)));
-        return Usecka::Poloha ("roznobezna", Bod2D((D2/D1),(D3/D1)));
+    if(this->totozne(other))
+    {
+        return Usecka::Poloha ("totozne", Bod2D{0,0});
+    }
+    if(this->rovnobezne(other))
+    {
+        return Usecka::Poloha ("rovnobezne", Bod2D{0,0});
+    }
+    Usecka::VseRov prva = getVseo();
+    Usecka::VseRov druha = other.getVseo();
+    float D = (prva[0] * druha[1]) - (druha[0]*prva[1]);
+    float D1 = ((-prva[2]) * druha[1]) - ((-prva[1])*druha[2]);
+    float D2 = (prva[0] * (-druha[2])) - (druha[0]* (-prva[2]));
+    //cout << Usecka::Poloha ("roznobezna", Bod2D((D1/D),(D2/D)));
+    return Usecka::Poloha ("roznobezne", Bod2D((D1/D),(D2/D)));
 
 }
 
 Usecka::Poloha::Poloha(char const *text, const Bod2D &prienik) : priesecnik(prienik)
 {
     std::strncpy(popis,text, 10);
-    popis[10]='\0';  // musim to pridat pri strncpy
+    popis[10]='\0';  // musim byt pri strncpy
 }
 
 std::ostream &operator<<(std::ostream &os, const Usecka::Poloha &poloha)
@@ -445,7 +447,211 @@ Usecka::VseRov Usecka::getOsUhla(const Usecka &other) const
     return Usecka::VseRov(XY.getx(), XY.gety(), -(XY.getx() * PR.getx() + XY.gety() * PR.gety()));
 }
 
+Usecka Usecka::getOsU() const
+{
+    Bod2D stred=(X).Stred(Y);
+    return {stred, getNormal()};
+}
+
+Usecka Usecka::getOsUhlaU(const Usecka &other) const
+{
+    Bod2D B1 = this->getPoloha(other).getPriesecnik();
+
+    Vektor J = this -> getSmer().getJednotkovy();
+    Vektor D = other.getSmer().getJednotkovy();
+
+    //Vektor B1 = J.getJednotkovy();
+    //Vektor B2 = D.getJednotkovy();
+
+    Bod2D B2 = J+D+B1;
+    return {B1,B2};
+}
+
 Bod2D Bod2D::getJednotkovy() const
 {
     return Bod2D{(getx()/getDlzka()), (gety()/getDlzka())};
 }
+
+bool Trojuholnik::existuje(Bod2D x, Bod2D y, Bod2D z)
+{
+    float a = x.vzdialenost(y);
+    float b = x.vzdialenost(z);
+    float c = y.vzdialenost(z);
+
+    try
+    {
+        cout << "Tri body:" << x << y<< z<< " ";
+        if (!((a+b>c) * (a+c>b) * (b+c > a)))
+        {
+            throw Trojuholnik::MsgErr("Tento trojuholnik neexistuje");
+        }
+        cout<<"Trojuholnik existuje"<<endl;
+
+    }
+    catch(const Trojuholnik::MsgErr &e)
+    {
+        e.getMsg();
+        return false;
+    }
+
+    return true;
+}
+
+Trojuholnik::Trojuholnik(Bod2D x, Bod2D y, Bod2D z)
+{
+    existuje(x, y, z);
+    A = x;
+    B = y;
+    C = z;
+
+
+}
+
+int Trojuholnik::generuj(int min, int max) const
+{
+    std::random_device rd; //random cislo z hardveru
+    std::mt19937 eng(rd()); // inicializacia generatora ktory som si vytvoril
+    std::uniform_int_distribution<int> distr (min, max);
+    return distr(eng);
+}
+
+Trojuholnik::Trojuholnik()
+{
+    /* generuj nejde na windows
+    Bod2D x{static_cast<float>(generuj(0, 10)),static_cast<float> (generuj (0, 10))};
+    Bod2D y{static_cast<float>(generuj(0, 10)),static_cast<float> (generuj (0, 10))};
+    Bod2D z{static_cast<float>(generuj(0, 10)),static_cast<float> (generuj (0, 10))};*/
+    srand (time(NULL));
+    Bod2D x = {static_cast<float>(rand()  % 10 + 1),static_cast<float>(rand()  % 10 + 1)};
+    Bod2D y = {static_cast<float>(rand()  % 10 + 1),static_cast<float>(rand()  % 10 + 1)};
+    Bod2D z = {static_cast<float>(rand()  % 10 + 1),static_cast<float>(rand()  % 10 + 1)};
+
+
+    if (!existuje(x,y,z))
+    {
+        EXIT_FAILURE;
+    }
+
+    A = x;
+    B = y;
+    C = z;
+
+    //cout <<"Body su: "<< x << y << z;
+
+}
+
+float Trojuholnik::getDlzkastrany(char strana) const
+{
+    if (strana == 'a')
+    {
+        Usecka BC = {(B),(C)};
+        return (BC.getDlzka());
+    }
+    if (strana == 'b')
+    {
+        Usecka AC = {(A),(C)};
+        return (AC.getDlzka());
+    }
+    if (strana == 'c')
+    {
+        Usecka AB = {(A),(B)};
+        return (AB.getDlzka());
+    }
+    else
+    {
+        cout << "zle zladane"<<endl;
+        float nic = 0;
+        return nic;
+    }
+
+
+}
+
+void Trojuholnik::MsgErr::getMsg() const
+{
+    cout<<msg;
+}
+
+/*
+float Trojuholnik::getvelkostUhla(char *uhol) const
+{
+    if (uhol == 'a')
+    {
+        Usecka BC = {(B),(C)};
+        return (BC.getDlzka());
+    }
+    if (uhol == 'b')
+    {
+        Usecka AC = {(A),(C)};
+        return (AC.getDlzka());
+    }
+    if (uhol == 'c')
+    {
+        Usecka AB = {(A),(B)};
+        return (AB.getDlzka());
+    }
+    return 0;
+}*/
+
+float Trojuholnik::getObvod() const
+{
+    return  getDlzkastrany('a')+getDlzkastrany('b')+getDlzkastrany('c');
+}
+
+float Trojuholnik::getObsah() const
+{
+    float s = getObvod()/2;
+    return (float)std::sqrt(s*(s-getDlzkastrany('a'))*(s-getDlzkastrany('b'))*(s-getDlzkastrany('c')));
+}
+
+Bod2D Trojuholnik::getTazisko() const
+{
+    Bod2D D = A.Stred(B);
+    return Bod2D(((C-D)/3) + D);
+}
+
+Bod2D Trojuholnik::getOrtocentrum() const
+{
+    Usecka os1 = {(A),(B)};
+    Usecka os2 = {(A),(C)};
+    Usecka os12 = os1.getOsUhlaU(os2);
+    Usecka os3 = {(B),(C)};
+    Usecka os4 = {(B),(A)};
+    Usecka os34 = os3.getOsUhlaU(os4);
+    Usecka::Poloha ret = (os12.getPoloha(os34));
+
+    Bod2D ret1 =ret.getPriesecnik();
+
+    return (ret1);
+}
+
+void Trojuholnik::getOpisanaKruznica() const
+{
+    Bod2D Ta = getTazisko();
+    float r = Ta.vzdialenost(A);
+    //cout << "kruznica ma stred: " << Ta << "a polomer: " << r << endl;
+    cout << "( x - " << Ta.getx() << ")^2 + ( y - " << Ta.gety() << ")^2 = " << (r * r) << endl;
+}
+
+void Trojuholnik::getVpisanaKruznica() const
+{
+    Bod2D Or = getOrtocentrum();
+    Bod2D S = A.Stred(B);
+    float r = Or.vzdialenost(S);
+    //cout << "kruznica ma stred: " << Or << "a polomer: " << r << endl;
+    cout << "( x - " << Or.getx() << ")^2 + ( y - " << Or.gety() << ")^2 = " << (r*r) << endl;
+}
+
+void Trojuholnik::getKruznicaDeviatichbodov() const
+{
+    Bod2D S = A.Stred(B); // iba na vypocet r
+    Bod2D Ta = getTazisko();
+    Bod2D Or = getOrtocentrum();
+    Bod2D K = Ta.Stred(Or);
+    float r = (Ta.vzdialenost(S)/2);
+    //cout << "stred ma v: " << K << "a polomer: " << r << endl;
+    cout << "( x - " << K.getx() << ")^2 + ( y - " << K.gety() << ")^2 = " << (r*r) << endl;
+}
+
+
+
