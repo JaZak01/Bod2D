@@ -22,16 +22,21 @@ int main()
     Bod2D Prvy(4,10);
     Bod2D Druhy(2,12);
     Bod2D Treti(10,15);
-
     //Bod2D Stvrty(2,12);
     //Usecka Prva{(Prvy),(Druhy)};
     //Usecka Druha{(Treti),(Stvrty)};
     Trojuholnik Adam = {Prvy, Druhy, Treti};
+    //cout << Adam.getvelkostUhla('c') << endl;
     //Trojuholnik Jakub  = Trojuholnik();
+    //cout << Adam.getObsah() << endl;
+    //cout << Adam.getObvod() << endl;
     //cout << Adam.getTazisko() << endl;
     //cout << Adam.getOrtocentrum() << endl;
-    cout << Adam.getDlzkastrany('a')<< endl;
+    //cout << Adam.getDlzkastrany('a')<< endl;
     Adam.getOpisanaKruznica();
+    Adam.getVpisanaKruznica();
+    //Adam.getKruznicaDeviatichbodov();
+    //Adam.getEulerovapriamka();
     //cout << Adam.getObsah()<< endl;
     //Adam.getKruznicaDeviatichbodov();
 

@@ -153,14 +153,16 @@ private:
 public:
     Trojuholnik (Bod2D x, Bod2D y, Bod2D z);
     Trojuholnik ();
-    float getDlzkastrany(char strana='a') const;
-    float getvelkostUhla (char * uhol )const;
+    float getDlzkastrany(char strana ='a') const;
+    float getvelkostUhla (char uhol = 'a')const;
     float getObvod() const;
     float getObsah() const;
+    Usecka getVyska(char naStranu ='a') const;
     Bod2D getTazisko() const;
     Bod2D getOrtocentrum() const;
     void getOpisanaKruznica() const;
     void getVpisanaKruznica() const;
+    Usecka getEulerovapriamka() const;
     void getKruznicaDeviatichbodov() const;
 
 

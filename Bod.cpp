@@ -394,9 +394,10 @@ bool Usecka::totozne(const Usecka &other) const
     VseRov druha = other.getVseo();
     return prva[0]/druha[0]==prva[1]/druha[1]==prva[2]/druha[2];
 }
-
+/*
 Usecka::Poloha Usecka::getPoloha(const Usecka &other) const
 {
+
     if(this->totozne(other))
     {
         return Usecka::Poloha ("totozne", Bod2D{0,0});
@@ -405,13 +406,35 @@ Usecka::Poloha Usecka::getPoloha(const Usecka &other) const
     {
         return Usecka::Poloha ("rovnobezne", Bod2D{0,0});
     }
-    Usecka::VseRov prva = getVseo();
-    Usecka::VseRov druha = other.getVseo();
-    float D = (prva[0] * druha[1]) - (druha[0]*prva[1]);
-    float D1 = ((-prva[2]) * druha[1]) - ((-prva[1])*druha[2]);
-    float D2 = (prva[0] * (-druha[2])) - (druha[0]* (-prva[2]));
+
+    auto prva = this -> getVseo();
+    auto druha = other.getVseo();
+    float D = (prva[0] * druha[1]) - druha[0]*prva[1];
+    float D1 = (-prva[2] * druha[1]) - prva[1]*druha[2] * (-1);
+    float D2 = (-prva[0] * druha[2]) - druha[0]* prva[2] * (-1);
     //cout << Usecka::Poloha ("roznobezna", Bod2D((D1/D),(D2/D)));
-    return Usecka::Poloha ("roznobezne", Bod2D((D1/D),(D2/D)));
+    return Usecka::Poloha ((char *) "Rovznobezna", {(D1/D),(D2/D)});
+
+}*/
+
+Usecka::Poloha Usecka::getPoloha(const Usecka &other) const
+{
+
+    if(this->totozne(other))
+    {
+        return Usecka::Poloha((char *)"totozne",Bod2D{0,0});
+    }
+    if(this->rovnobezne(other))
+    {
+        return Usecka::Poloha((char *)"Rovnobezne",Bod2D{0,0});
+
+    }
+    auto A = this->getVseo();
+    auto B = other.getVseo();
+    float D = A[0] * B[1] - A[1] * B[0];
+    float D1 = -A[2]*B[1] - A[1]* B[2] * (-1);
+    float D2 = -A[0] * B[2] - B[0] * A[2] * -1;
+    return Usecka::Poloha((char *)"Roznobezna",{D1/D,D2/D});
 
 }
 
@@ -449,22 +472,23 @@ Usecka::VseRov Usecka::getOsUhla(const Usecka &other) const
 
 Usecka Usecka::getOsU() const
 {
-    Bod2D stred=(X).Stred(Y);
-    return {stred, getNormal()};
+    Bod2D stred=getStredovyusecky();
+    Bod2D N = getNormal();
+    return {stred, stred + N};
 }
 
 Usecka Usecka::getOsUhlaU(const Usecka &other) const
 {
     Bod2D B1 = this->getPoloha(other).getPriesecnik();
 
-    Vektor J = this -> getSmer().getJednotkovy();
-    Vektor D = other.getSmer().getJednotkovy();
+    Vektor J = this -> getSmer();//.getJednotkovy();
+    Vektor D = other.getSmer();//.getJednotkovy();
 
-    //Vektor B1 = J.getJednotkovy();
-    //Vektor B2 = D.getJednotkovy();
+    Vektor B4 = J.getJednotkovy();
+    Vektor B5 = D.getJednotkovy();
 
-    Bod2D B2 = J+D+B1;
-    return {B1,B2};
+    Bod2D B2 = B5+B4+B1;
+    return Usecka {B1,B2};
 }
 
 Bod2D Bod2D::getJednotkovy() const
@@ -547,12 +571,12 @@ float Trojuholnik::getDlzkastrany(char strana) const
         Usecka BC = {(B),(C)};
         return (BC.getDlzka());
     }
-    if (strana == 'b')
+    else if (strana == 'b')
     {
         Usecka AC = {(A),(C)};
         return (AC.getDlzka());
     }
-    if (strana == 'c')
+    else if (strana == 'c')
     {
         Usecka AB = {(A),(B)};
         return (AB.getDlzka());
@@ -572,26 +596,27 @@ void Trojuholnik::MsgErr::getMsg() const
     cout<<msg;
 }
 
-/*
-float Trojuholnik::getvelkostUhla(char *uhol) const
+
+float Trojuholnik::getvelkostUhla(char uhol) const
 {
+
     if (uhol == 'a')
     {
-        Usecka BC = {(B),(C)};
-        return (BC.getDlzka());
+        return (Usecka (A,B).getUhol(Usecka (A,C)));
     }
-    if (uhol == 'b')
+    else if (uhol == 'b')
     {
-        Usecka AC = {(A),(C)};
-        return (AC.getDlzka());
+        return (Usecka (B,A).getUhol(Usecka (B,C)));
     }
-    if (uhol == 'c')
+    else if (uhol == 'c')
     {
-        Usecka AB = {(A),(B)};
-        return (AB.getDlzka());
+        return (Usecka (C,A).getUhol(Usecka (C,B)));
     }
-    return 0;
-}*/
+    else
+    {
+        return (Usecka (A,B).getUhol(Usecka (A,C)));
+    }
+}
 
 float Trojuholnik::getObvod() const
 {
@@ -604,6 +629,36 @@ float Trojuholnik::getObsah() const
     return (float)std::sqrt(s*(s-getDlzkastrany('a'))*(s-getDlzkastrany('b'))*(s-getDlzkastrany('c')));
 }
 
+Usecka Trojuholnik::getVyska(char naStranu) const
+{
+    Vektor smerovy;
+    Bod2D bNV;
+    if (naStranu == 'a')
+    {
+        smerovy = Usecka(C,B).getNormal();
+        bNV= {smerovy+A};
+        return {bNV,A};
+    }
+    else if (naStranu == 'b')
+    {
+        smerovy = Usecka(A,C).getNormal();
+        bNV = {smerovy+B};
+        return {bNV,B};
+    }
+    else if (naStranu == 'c')
+    {
+        smerovy = Usecka(A,B).getNormal();
+        bNV = {smerovy+C};
+        return {bNV,C};
+    }
+    else
+    {
+        smerovy = Usecka(C,B).getNormal();
+        bNV= {smerovy+A};
+        return {(bNV),(A)};
+    }
+}
+
 Bod2D Trojuholnik::getTazisko() const
 {
     Bod2D D = A.Stred(B);
@@ -612,37 +667,37 @@ Bod2D Trojuholnik::getTazisko() const
 
 Bod2D Trojuholnik::getOrtocentrum() const
 {
-    Usecka os1 = {(A),(B)};
-    Usecka os2 = {(A),(C)};
-    Usecka os12 = os1.getOsUhlaU(os2);
-    Usecka os3 = {(B),(C)};
-    Usecka os4 = {(B),(A)};
-    Usecka os34 = os3.getOsUhlaU(os4);
-    Usecka::Poloha ret = (os12.getPoloha(os34));
-
-    Bod2D ret1 =ret.getPriesecnik();
-
-    return (ret1);
+    return Bod2D((getVyska('a').getPoloha(getVyska('b')).getPriesecnik()));
 }
 
 void Trojuholnik::getOpisanaKruznica() const
 {
-    Bod2D Ta = getTazisko();
-    float r = Ta.vzdialenost(A);
+    Usecka AB = {(A),(B)};
+    Usecka BA = {(B),(C)};
+    Usecka osAB = AB.getOsU();
+    Usecka osBC = BA.getOsU();
+    Bod2D SKr = osAB.getPoloha(osBC).getPriesecnik();
+    cout << SKr << endl;
+    float r = SKr.vzdialenost(A);
     //cout << "kruznica ma stred: " << Ta << "a polomer: " << r << endl;
-    cout << "( x - " << Ta.getx() << ")^2 + ( y - " << Ta.gety() << ")^2 = " << (r * r) << endl;
+    cout << "Opisana je: ( x - " <<setprecision(2)<< SKr.getx() << ")^2 + ( y - " << setprecision(2)<< SKr.gety() << ")^2 = " << r*r << endl;
 }
 
 void Trojuholnik::getVpisanaKruznica() const
 {
-    Bod2D Or = getOrtocentrum();
-    Bod2D S = A.Stred(B);
-    float r = Or.vzdialenost(S);
+    Usecka osA = Usecka(A,B).getOsUhlaU(Usecka(A,C));
+    Usecka osB = Usecka(B,A).getOsUhlaU(Usecka(B,C));
+    Bod2D SK = osA.getPoloha(osB).getPriesecnik();
+    Usecka vC = getVyska('c');
+    Bod2D pC = vC.getPoloha(Usecka(A,B)).getPriesecnik();
+    cout << pC << endl;
+    float r = SK.vzdialenost(pC);
     //cout << "kruznica ma stred: " << Or << "a polomer: " << r << endl;
-    cout << "( x - " << Or.getx() << ")^2 + ( y - " << Or.gety() << ")^2 = " << (r*r) << endl;
+    cout << "Vpisana je: (x - " <<setprecision(2)<< SK.getx() << ")^2 + (y - " <<setprecision(2)<< SK.gety() << ")^2 = " << (r*r) << endl;
 }
 
-void Trojuholnik::getKruznicaDeviatichbodov() const
+
+void Trojuholnik::getKruznicaDeviatichbodov() const //nedorobene
 {
     Bod2D S = A.Stred(B); // iba na vypocet r
     Bod2D Ta = getTazisko();
@@ -650,8 +705,20 @@ void Trojuholnik::getKruznicaDeviatichbodov() const
     Bod2D K = Ta.Stred(Or);
     float r = (Ta.vzdialenost(S)/2);
     //cout << "stred ma v: " << K << "a polomer: " << r << endl;
-    cout << "( x - " << K.getx() << ")^2 + ( y - " << K.gety() << ")^2 = " << (r*r) << endl;
+    cout << "Kruznica 9 bodov je: ( x - " << K.getx() << ")^2 + ( y - " << K.gety() << ")^2 = " << (r*r) << endl;
 }
+
+Usecka Trojuholnik::getEulerovapriamka() const // nedorobene
+{
+    Bod2D O = getOrtocentrum();
+    Bod2D T = getTazisko();
+
+    Usecka Eu = {(O),(T)};
+    cout <<"Eulerova priamka: " << Eu.getVseo();
+    return Usecka {(O),(T)};
+}
+
+
 
 
 
